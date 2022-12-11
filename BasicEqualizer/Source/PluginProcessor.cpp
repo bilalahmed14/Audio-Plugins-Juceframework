@@ -195,6 +195,21 @@ void BasicEqualizerAudioProcessor::setStateInformation (const void* data, int si
     // whose contents will have been created by the getStateInformation() call.
 }
 
+chainsetting getChainSettings(juce::AudioProcessorValueTreeState& apvts)
+{
+    chainsetting settings;
+
+    settings.lowCutFreq = apvts.getRawParameterValue("LowCut freq")->load();
+    settings.highCutFreq = apvts.getRawParameterValue("HighCut Freq")->load();
+    settings.peakFreq = apvts.getRawParameterValue("Peak Freq")->load();
+    settings.peakGainInDecibels = apvts.getRawParameterValue("Peak Gain")->load();
+    settings.peakQuality = apvts.getRawParameterValue("Peak Quality")->load();
+    settings.lowCutSlope = apvts.getRawParameterValue("Lowcut slope")->load();
+    settings.highCutSlope = apvts.getRawParameterValue("Highcut slope")->load();
+
+    return settings;
+}
+
 
 juce::AudioProcessorValueTreeState::ParameterLayout BasicEqualizerAudioProcessor::createparameterlayout()
 {
@@ -202,7 +217,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout BasicEqualizerAudioProcessor
 
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("LowCut frq",
+    layout.add(std::make_unique<juce::AudioParameterFloat>("LowCut freq",
         "LowCut freq",
         juce::NormalisableRange<float>(20.0f, 20000.0f, 1.f, 1.f),
         20.f));
